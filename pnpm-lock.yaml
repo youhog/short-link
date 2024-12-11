@@ -11,9 +11,6 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.47.3
         version: 2.47.3
-      '@vercel/functions':
-        specifier: ^1.5.1
-        version: 1.5.1
       fastify:
         specifier: ^4.25.2
         version: 4.25.2
@@ -62,15 +59,6 @@ packages:
 
   '@types/ws@8.5.13':
     resolution: {integrity: sha512-osM/gWBTPKgHV8XkTunnegTRIsvF6owmf5w+JtAfOw472dptdm0dlGv4xCt6GwQRcC2XVOvvRE/0bAoQcL2QkA==}
-
-  '@vercel/functions@1.5.1':
-    resolution: {integrity: sha512-cCdrWa4sUkNE8WjZu9ODA4Q3d92Y333bCL3zebvQ8XCOH0MCy37q3rQ02sJU93mn7BuZyEk5hWBnEtfOb6Sr2Q==}
-    engines: {node: '>= 16'}
-    peerDependencies:
-      '@aws-sdk/credential-provider-web-identity': '*'
-    peerDependenciesMeta:
-      '@aws-sdk/credential-provider-web-identity':
-        optional: true
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -379,8 +367,6 @@ snapshots:
   '@types/ws@8.5.13':
     dependencies:
       '@types/node': 22.10.2
-
-  '@vercel/functions@1.5.1': {}
 
   abort-controller@3.0.0:
     dependencies:
