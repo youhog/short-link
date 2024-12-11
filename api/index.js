@@ -1,16 +1,9 @@
-import { readFile } from 'node:fs/promises';
-
 import Fastify from 'fastify';
 
 import * as linkService from '../service/link.js';
 
 const app = Fastify({
   logger: true,
-})
-
-app.get('/', async (req, reply) => {
-  const html = await readFile(process.cwd() + '/view/index.html', { encoding: 'utf-8' })
-  return reply.status(200).type('text/html').send(html)
 })
 
 app.post('/api/addUrl', async (req, reply) => {
