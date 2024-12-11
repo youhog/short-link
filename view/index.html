@@ -148,7 +148,8 @@
       fetchApi('/api/addUrl', { method: 'POST', body: { url: urlInput.value } })
         .then((data) => {
           responseMsg.style.color = '#28a745';
-          responseMsg.innerHTML = `短链接地址： <a href="${data.url}">${data.url}</a>`;
+          const url = window.location.origin + data.url;
+          responseMsg.innerHTML = `短链接地址： <a href="${url}">${url}</a>`;
           urlInput.value = '';
         })
         .catch((error) => {

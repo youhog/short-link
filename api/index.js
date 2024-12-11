@@ -31,12 +31,25 @@ app.post('/api/addUrl', async (req, reply) => {
   return reply.status(200).type('application/json').send({
     code: 200,
     msg: 'success',
-    url: `https://short.pangcy.cn/u/${result.data.short}`
+    url: `/u/${result.data.short}`
   })
 })
 
 app.get('/u/:hash', async (req, reply) => {
-  return reply.status(301).redirect('https://blog.pangcy.cn')
+  if (req.params?.hash) {
+    const result = await linkService.getUrl(req.params.hash)
+    if (!result || !result.data?.length || result.error) {
+      return reply.status(200).type('application/json').send({
+        code: 401,
+        msg: result.error.message || '短链接不存在'
+      })
+    }
+    return reply.status(302).redirect(result.data[0].link)
+  }
+  return reply.status(200).type('application/json').send({
+    code: 401,
+    msg: '短链接不存在'
+  })
 })
 
 export default async function handler(req, reply) {
