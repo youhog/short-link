@@ -15,7 +15,7 @@
 
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #f3f4f6, #e4e8ec);
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
       color: #333;
       display: flex;
       justify-content: center;
@@ -31,10 +31,29 @@
       padding: 40px;
       min-width: 450px;
       text-align: center;
+      position: relative;
+    }
+
+    .github-link {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      color: #007bff;
+      border: 1px solid #007bff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .github-link:hover {
+      background: #007bff;
+      color: #fff;
     }
 
     header {
-      font-size: 32px;
+      font-size: 36px;
       margin-bottom: 24px;
       color: #444;
       font-weight: 700;
@@ -51,12 +70,13 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
-      transition: border-color 0.3s;
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
 
     input[type="text"]:focus {
       outline: none;
       border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 
     input[type="button"] {
@@ -68,7 +88,7 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.2s;
     }
 
     input[type="button"]:hover {
@@ -85,13 +105,30 @@
       color: #28a745;
     }
 
-    @media (max-width: 500px) {
+    .response a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .response a:hover {
+      text-decoration: underline;
+    }
+
+    @media screen and (max-width: 500px) {
+      body {
+        padding: 10px;
+        align-items: flex-start;
+      }
+
       .wrapper {
         padding: 20px;
+        width: 100%;
+        min-width: 0px;
       }
 
       header {
-        font-size: 24px;
+        font-size: 28px;
       }
     }
   </style>
@@ -99,6 +136,7 @@
 
 <body>
   <div class="wrapper">
+    <a href="https://github.com/your-repository" class="github-link" target="_blank">GitHub</a>
     <header>短链接服务</header>
     <div class="url-wrapper">
       <input type="text" id="url-input" placeholder="输入需要缩短的链接">
@@ -149,7 +187,7 @@
         .then((data) => {
           responseMsg.style.color = '#28a745';
           const url = window.location.origin + data.url;
-          responseMsg.innerHTML = `短链接地址： <a href="${url}">${url}</a>`;
+          responseMsg.innerHTML = `短链接地址： <a href="${url}" target="_blank">${url}</a>`;
           urlInput.value = '';
         })
         .catch((error) => {
