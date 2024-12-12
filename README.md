@@ -1,22 +1,29 @@
-# Fastify + Vercel
+<!--
+ * @Author: zi.yang
+ * @Date: 2024-12-11 19:24:33
+ * @LastEditors: zi.yang
+ * @LastEditTime: 2024-12-12 19:23:51
+ * @Description: 
+ * @FilePath: /short-link/README.md
+-->
+# Short Link Service
 
-This example shows how to use Fastify with Vercel Functions.
+基于 Fastify + Vercel + Supabase 实现的短链接服务。
 
-## Demo
+## 在线访问
 
-https://fastify-example.vercel.app/
+访问地址： [https://short.pangcy.cn](https://short.pangcy.cn)
 
 ## Running Locallly
 
 ```bash
 npm i
 npm i -g vercel@latest
+vercel link
+vercel env pull .env.development.local
 vercel dev
 ```
 
-## One-Click Deploy
+# 界面预览
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/starter/fastify&project-name=fastify&repository-name=fastify)
-`
+![预览](./readme/image.png)
