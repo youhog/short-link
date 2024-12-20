@@ -131,11 +131,34 @@
         font-size: 28px;
       }
     }
+
+    .loading {
+      display: none;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #007bff;
+    }
+
+    .copy-btn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .copy-btn:hover {
+      background: #218838;
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrapper">
+  <div class="wrapper" role="main">
     <a href="https://github.com/Alessandro-Pang/short-link" class="github-link"
       target="_blank">GitHub</a>
     <header>短链接服务</header>
@@ -143,13 +166,18 @@
       <input type="text" id="url-input" placeholder="输入需要缩短的链接">
       <input type="button" value="添加" id="add-btn">
     </div>
-    <div class="response" id="response-msg"></div>
+    <div class="response" id="response-msg" aria-live="polite"></div>
+    <div class="loading" id="loading-msg">处理中...</div>
+    <button class="copy-btn" id="copy-btn" style="display: none;">复制短链接</button>
   </div>
 
+  <script src="autolog.js"></script>
   <script>
     const urlInput = document.getElementById('url-input');
     const addBtn = document.getElementById('add-btn');
     const responseMsg = document.getElementById('response-msg');
+    const loadingMsg = document.getElementById('loading-msg');
+    const copyBtn = document.getElementById('copy-btn');
 
     function fetchApi(url, { method = 'GET', body, params }) {
       return new Promise((resolve, reject) => {
@@ -181,19 +209,27 @@
         return;
       }
 
-      responseMsg.textContent = '处理中...';
-      responseMsg.style.color = '#007bff';
+      responseMsg.textContent = '';
+      loadingMsg.style.display = 'block';
 
       fetchApi('/api/addUrl', { method: 'POST', body: { url: urlInput.value } })
         .then((data) => {
+          loadingMsg.style.display = 'none';
           responseMsg.style.color = '#28a745';
           const url = window.location.origin + data.url;
           responseMsg.innerHTML = `短链接地址： <a href="${url}" target="_blank">${url}</a>`;
           urlInput.value = '';
+          copyBtn.style.display = 'inline-block';
+          copyBtn.onclick = () => {
+            navigator.clipboard.writeText(url);
+            autolog.log("复制成功", "success", 2500);
+          }
         })
         .catch((error) => {
+          loadingMsg.style.display = 'none';
           responseMsg.style.color = 'red';
           responseMsg.textContent = `发生错误: ${error.msg}`;
+          copyBtn.style.display = 'none';
         });
     });
   </script>
