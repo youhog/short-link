@@ -2,7 +2,7 @@
  * @Author: zi.yang
  * @Date: 2024-12-11 19:47:42
  * @LastEditors: zi.yang
- * @LastEditTime: 2024-12-12 09:19:42
+ * @LastEditTime: 2025-04-09 14:46:27
  * @Description: 
  * @FilePath: /short-link/service/link.js
  */
@@ -10,7 +10,7 @@ import crypto from 'node:crypto';
 
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
 
 function generatorHash(url) {
   var md5 = crypto.createHash('md5');
