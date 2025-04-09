@@ -14,6 +14,16 @@ app.post('/api/addUrl', async (req, reply) => {
       msg: 'URL 是必填参数'
     })
   }
+
+  // 验证URL格式
+  const urlPattern = /^(https?:\/\/|#小程序:\/\/).+/;
+  if (!urlPattern.test(url)) {
+    return reply.status(200).type('application/json').send({
+      code: 401,
+      msg: 'URL 格式不正确，必须以 http://、https:// 或 #小程序:// 开头'
+    })
+  }
+
   const result = await linkService.addUrl(req)
   if (result.error) {
     return reply.status(200).type('application/json').send({

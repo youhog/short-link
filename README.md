@@ -2,7 +2,7 @@
  * @Author: zi.yang
  * @Date: 2024-12-11 19:24:33
  * @LastEditors: zi.yang
- * @LastEditTime: 2024-12-12 19:23:51
+ * @LastEditTime: 2025-04-09 10:56:39
  * @Description: 
  * @FilePath: /short-link/README.md
 -->
@@ -16,7 +16,7 @@
 
 ## 在线访问
 
-您可以在线访问该服务：[https://short.pangcy.cn](https://short.pangcy.cn)
+你可以在线访问该服务：[https://short.pangcy.cn](https://short.pangcy.cn)
 
 ## 功能
 
