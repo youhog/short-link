@@ -257,6 +257,11 @@
       gap: 8px;
     }
 
+    /* 确保加载状态显示时是flex布局 */
+    .loading.active {
+      display: flex;
+    }
+
     .loading-spinner {
       width: 20px;
       height: 20px;
@@ -584,31 +589,47 @@
 
     // 复制按钮点击事件
     copyBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(currentShortUrl);
-      autolog.log("复制成功", "success", 2500);
-      // 添加复制按钮动画效果
-      copyBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-        </svg> 
-        已复制
-      `;
-      resetCopyButton();
+      if (currentShortUrl) {
+        navigator.clipboard.writeText(currentShortUrl);
+        autolog.log("复制成功", "success", 2500);
+        // 添加复制按钮动画效果
+        copyBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+          </svg> 
+          已复制
+        `;
+        resetCopyButton();
+      } else {
+        autolog.log("没有可复制的短链接", "error", 2500);
+      }
     });
 
     // 分享按钮点击事件
     shareBtn.addEventListener('click', () => {
-      shareLink(currentShortUrl);
+      if (currentShortUrl) {
+        shareLink(currentShortUrl);
+      } else {
+        autolog.log("没有可分享的短链接", "error", 2500);
+      }
     });
 
     // 二维码按钮点击事件
     qrcodeBtn.addEventListener('click', () => {
-      generateQRCode(currentShortUrl);
+      if (currentShortUrl) {
+        generateQRCode(currentShortUrl);
+      } else {
+        autolog.log("没有可生成二维码的短链接", "error", 2500);
+      }
     });
 
     // 统计按钮点击事件
     statsBtn.addEventListener('click', () => {
-      autolog.log("访问统计功能即将上线", "info", 3000);
+      if (currentShortUrl) {
+        autolog.log("访问统计功能即将上线", "info", 3000);
+      } else {
+        autolog.log("没有可查看统计的短链接", "error", 2500);
+      }
     });
 
     // 生成短链接
@@ -624,12 +645,21 @@
         return;
       }
 
+      // 隐藏之前的短链接展示区域
       responseMsg.textContent = '';
-      loadingMsg.style.display = 'block';
+      responseMsg.classList.remove('visible');
+      // 显示加载状态
+      loadingMsg.style.display = 'none';
+      loadingMsg.classList.add('active');
+      loadingMsg.style.display = 'flex';
 
       fetchApi('/api/addUrl', { method: 'POST', body: { url: urlInput.value } })
         .then((data) => {
+          // 隐藏加载状态
           loadingMsg.style.display = 'none';
+          loadingMsg.classList.remove('active');
+
+          // 设置当前短链接
           currentShortUrl = window.location.origin + data.url;
 
           // 使用autolog显示成功消息
@@ -655,9 +685,13 @@
         })
         .catch((error) => {
           loadingMsg.style.display = 'none';
+          loadingMsg.classList.remove('active');
           autolog.log(`发生错误: ${error.msg}`, "error", 3500);
           responseMsg.textContent = '';
+          responseMsg.classList.remove('visible');
           actionButtons.style.display = 'none';
+          // 清空当前短链接
+          currentShortUrl = '';
         });
     });
   </script>
