@@ -2,7 +2,7 @@
  * @Author: zi.yang
  * @Date: 2024-12-11 19:24:33
  * @LastEditors: zi.yang
- * @LastEditTime: 2025-04-09 10:56:39
+ * @LastEditTime: 2025-06-05 16:51:04
  * @Description: 
  * @FilePath: /short-link/README.md
 -->
@@ -13,6 +13,9 @@
 ## 概述
 
 短链接服务允许用户缩短 URL，以便于分享和管理。它利用 Fastify 作为后端，Vercel 进行部署，并使用 Supabase 作为数据库解决方案。
+
+- 实现原理：[半个小时，我开发了个短链接服务](https://juejin.cn/post/7511983823259189287)
+- 部署教程：[从零搭建一个免费稳定的私有短链接服务](https://juejin.cn/post/7511671401683992587)
 
 ## 在线访问
 
@@ -29,7 +32,7 @@
 
 ### 前提条件
 
-确保您已安装以下软件：
+确保你已安装以下软件：
 
 - Node.js
 - Vercel CLI
@@ -54,7 +57,7 @@ npm install
    npm install -g vercel@latest
    ```
 
-2. 将您的项目与 Vercel 关联：
+2. 将你的项目与 Vercel 关联：
 
    ```bash
    vercel link
@@ -74,7 +77,7 @@ npm install
 
 ## 使用方法
 
-1. 在输入框中输入您希望缩短的 URL。
+1. 在输入框中输入你希望缩短的 URL。
 2. 点击“添加”按钮生成短链接。
 3. 复制生成的短链接以便分享。
 
