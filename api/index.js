@@ -1,3 +1,11 @@
+/*
+ * @Author: zi.yang
+ * @Date: 2024-12-13 17:38:41
+ * @LastEditors: zi.yang
+ * @LastEditTime: 2025-06-10 00:12:49
+ * @Description: 
+ * @FilePath: /short-link/api/index.js
+ */
 import Fastify from 'fastify';
 
 import * as linkService from '../service/link.js';
@@ -58,4 +66,18 @@ app.get('/u/:hash', async (req, reply) => {
 export default async function handler(req, reply) {
   await app.ready()
   app.server.emit('request', req, reply)
+}
+
+// 本地开发启动
+if (process.env.NODE_ENV !== 'production') {
+  const start = async () => {
+    try {
+      await app.listen({ port: 3000, host: '0.0.0.0' })
+      console.log(`Server listening on ${app.server.address().port}`)
+    } catch (err) {
+      app.log.error(err)
+      process.exit(1)
+    }
+  }
+  start()
 }
