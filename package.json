@@ -12,12 +12,13 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.47.3",
     "concurrently": "^9.1.2",
-    "fastify": "^4.25.2",
+    "fastify": "^5.3.3",
     "qrcode": "^1.5.1",
-    "vue": "^3.4.21"
+    "vue": "^3.4.21",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
-    "vite": "^5.1.6"
+    "vite": "^6.3.5"
   }
 }
