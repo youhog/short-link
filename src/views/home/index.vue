@@ -7,15 +7,25 @@
         target="_blank"
         ><span v-html="githubIcon"></span> GitHub
       </a>
-      <header>短链接服务</header>
+      <header>短連結服務</header>
 
       <UrlInput
         v-model="urlInput"
         :icon="linkIcon"
-        placeholder="输入需要缩短的链接 (http://、https:// 或 #小程序://)"
-        buttonText="生成短链接"
+        placeholder="輸入需要縮短的連結 (http://、https:// 或 #小程序://)"
+        buttonText="產生短連結"
         @submit="generateShortLink"
       />
+
+      <div class="custom-link-wrapper">
+        <input
+            type="text"
+            v-model="customShort"
+            placeholder="自訂連結 (選填，例如：my-link)"
+            class="custom-link-input"
+        />
+      </div>
+
 
       <ShortLinkCard
         :shortUrl="currentShortUrl"
@@ -23,7 +33,7 @@
         :isError="isError"
       />
 
-      <LoadingSpinner :active="isLoading">正在生成短链接...</LoadingSpinner>
+      <LoadingSpinner :active="isLoading">正在產生短連結...</LoadingSpinner>
 
       <ActionButtons
         :shortUrl="currentShortUrl"
@@ -52,80 +62,112 @@ import LoadingSpinner from '@/components/base/LoadingSpinner.vue';
 import UrlInput from '@/components/base/UrlInput.vue';
 import QRCodeModal from '@/components/QRCodeModal.vue';
 import ShortLinkCard from '@/components/ShortLinkCard.vue';
-import { addUrl } from '@/services/api.js';
+import { addUrl, getStats } from '@/services/api.js';
 import { showMessage } from '@/utils/message.js';
 import { validateUrl } from '@/utils/validator.js';
 
-// 响应式状态
+// 響應式狀態
 const urlInput = ref('');
+const customShort = ref('');
 const currentShortUrl = ref('');
 const isLoading = ref(false);
 const responseVisible = ref(false);
 const isError = ref(false);
 const qrcodeModalVisible = ref(false);
 
-// 生成短链接
+// 儲存到歷史紀錄
+function saveToHistory(originalUrl, shortUrl) {
+    const history = JSON.parse(localStorage.getItem('shortLinkHistory') || '[]');
+    const newRecord = {
+        originalUrl,
+        shortUrl,
+        createdAt: new Date().toLocaleString('zh-TW'),
+    };
+    // 新紀錄加到最前面
+    history.unshift(newRecord);
+    // 最多只儲存 50 筆
+    if (history.length > 50) {
+        history.pop();
+    }
+    localStorage.setItem('shortLinkHistory', JSON.stringify(history));
+}
+
+
+// 產生短連結
 async function generateShortLink() {
   const inputUrl = urlInput.value.trim();
   if (!inputUrl) {
-    showMessage('请输入链接', 'error');
+    showMessage('請輸入連結', 'error');
     return;
   }
 
   if (!validateUrl(inputUrl)) {
     showMessage(
-      '请输入有效的链接，必须以 http://、https:// 或 #小程序:// 开头',
+      '請輸入有效的連結，必須以 http://、https:// 或 #小程序:// 開頭',
       'error'
     );
     return;
   }
 
-  // 显示加载状态
+  // 顯示載入狀態
   isLoading.value = true;
   responseVisible.value = false;
 
   try {
-    // 使用 API 服务模块
-    const data = await addUrl(inputUrl);
+    // 使用 API 服務模組，並傳入自訂連結
+    const data = await addUrl(inputUrl, customShort.value.trim());
 
-    // 隐藏加载状态
+    // 隱藏載入狀態
     isLoading.value = false;
 
-    // 设置当前短链接
-    currentShortUrl.value = window.location.origin + data.url;
-    showMessage('短链接生成成功', 'success');
+    // 設定目前短連結
+    const newShortUrl = window.location.origin + data.url;
+    currentShortUrl.value = newShortUrl;
+    showMessage('短連結產生成功', 'success');
+    
+    // 儲存到歷史紀錄
+    saveToHistory(inputUrl, newShortUrl);
+
     urlInput.value = '';
+    customShort.value = '';
     responseVisible.value = true;
     isError.value = false;
   } catch (error) {
     isLoading.value = false;
-    showMessage(`发生错误: ${error.message || '未知错误'}`, 'error');
+    showMessage(`發生錯誤: ${error.message || '未知錯誤'}`, 'error');
     currentShortUrl.value = '';
     responseVisible.value = false;
   }
 }
 
-// 显示二维码模态框
+// 顯示 QR Code 模態框
 function showQRCodeModal() {
   if (!currentShortUrl.value) {
-    showMessage('没有可生成二维码的短链接', 'error');
+    showMessage('沒有可產生 QR Code 的短連結', 'error');
     return;
   }
   qrcodeModalVisible.value = true;
 }
 
-// 关闭二维码模态框
+// 關閉 QR Code 模態框
 function closeQRCodeModal() {
   qrcodeModalVisible.value = false;
 }
 
-// 显示统计信息
-function showStats() {
+// 顯示統計資訊
+async function showStats() {
   if (!currentShortUrl.value) {
-    showMessage('没有可查看统计的短链接', 'error');
+    showMessage('沒有可查看統計的短連結', 'error');
     return;
   }
-  showMessage('访问统计功能即将上线', 'info');
+  try {
+      const hash = currentShortUrl.value.split('/').pop();
+      const response = await getStats(hash);
+      const clicks = response.data.clicks;
+      showMessage(`此連結已被點擊 ${clicks} 次`, 'info');
+  } catch (error) {
+      showMessage(error.message || '無法取得統計資料', 'error');
+  }
 }
 </script>
 
@@ -134,7 +176,7 @@ function showStats() {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 .wrapper {
   background: #fff;
@@ -212,6 +254,30 @@ header::after {
   background: linear-gradient(90deg, #4776e6, #8e54e9);
   border-radius: 2px;
 }
+
+.custom-link-wrapper {
+  margin-top: -16px; /* Offset the margin from UrlInput */
+  margin-bottom: 16px;
+}
+
+.custom-link-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.custom-link-input:focus {
+  outline: none;
+  border-color: #6c5ce7;
+  box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.15);
+  background-color: #fff;
+}
+
 
 @media screen and (max-width: 520px) {
   .wrapper {

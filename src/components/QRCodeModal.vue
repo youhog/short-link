@@ -2,11 +2,11 @@
   <div class="modal" :style="{ display: visible ? 'flex' : 'none' }">
     <div class="modal-content">
       <div class="modal-close" @click="emit('close')">×</div>
-      <h3>短链接二维码</h3>
+      <h3>短連結 QR Code</h3>
       <div class="qrcode-container">
         <canvas ref="qrCanvas"></canvas>
       </div>
-      <p>扫描二维码访问短链接</p>
+      <p>掃描 QR Code 訪問短連結</p>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import QRCode from 'qrcode';
 
-// 定义props和emits
+// 定義props和emits
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -32,19 +32,19 @@ const emit = defineEmits(['close', 'error']);
 // 引用canvas元素
 const qrCanvas = ref(null);
 
-// 生成二维码的方法
+// 產生 QR Code 的方法
 const generateQRCode = () => {
   if (!props.url) return;
 
   QRCode.toCanvas(qrCanvas.value, props.url, (error) => {
     if (error) {
       console.error('QR Code generation error:', error);
-      emit('error', '生成二维码失败');
+      emit('error', '產生 QR Code 失敗');
     }
   });
 };
 
-// 监听visible和url的变化
+// 監聽visible和url的變化
 watch(() => props.visible, (newVal) => {
   if (newVal && props.url) {
     nextTick(() => {
@@ -61,9 +61,9 @@ watch(() => props.url, (newVal) => {
   }
 });
 
-// 生命周期钩子
+// 生命週期鉤子
 onMounted(() => {
-  // 点击模态框外部关闭
+  // 點擊模態框外部關閉
   const handleOutsideClick = (event) => {
     if (event.target.classList.contains('modal')) {
       emit('close');
@@ -72,7 +72,7 @@ onMounted(() => {
 
   window.addEventListener('click', handleOutsideClick);
 
-  // 组件卸载时移除事件监听器
+  // 組件卸載時移除事件監聽器
   onUnmounted(() => {
     window.removeEventListener('click', handleOutsideClick);
   });

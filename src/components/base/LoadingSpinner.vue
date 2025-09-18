@@ -1,12 +1,12 @@
 <template>
   <div class="loading" :class="{ active: active }">
     <div class="loading-spinner"></div>
-    <span><slot>加载中...</slot></span>
+    <span><slot>載入中...</slot></span>
   </div>
 </template>
 
 <script setup>
-// 定义props
+// 定義props
 defineProps({
   active: {
     type: Boolean,

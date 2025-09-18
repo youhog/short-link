@@ -1,28 +1,28 @@
 <template>
   <div class="login-wrapper">
     <div class="login-card">
-      <h1 class="login-title">登录</h1>
-      <p class="login-subtitle">登录以管理您的短链接</p>
+      <h1 class="login-title">登入</h1>
+      <p class="login-subtitle">登入以管理您的短連結</p>
 
       <form class="login-form" @submit.prevent="handleLogin">
         <div class="form-group">
-          <label for="username">用户名</label>
+          <label for="username">使用者名稱</label>
           <input
             type="text"
             id="username"
             v-model="username"
-            placeholder="请输入用户名"
+            placeholder="請輸入使用者名稱"
             required
           />
         </div>
 
         <div class="form-group">
-          <label for="password">密码</label>
+          <label for="password">密碼</label>
           <input
             type="password"
             id="password"
             v-model="password"
-            placeholder="请输入密码"
+            placeholder="請輸入密碼"
             required
           />
         </div>
@@ -30,24 +30,22 @@
         <div class="form-actions">
           <button type="submit" class="login-button" :disabled="isLoading">
             <LoadingSpinner v-if="isLoading" :active="true" />
-            <span v-else>登录</span>
+            <span v-else>登入</span>
           </button>
         </div>
       </form>
 
       <div class="login-footer">
-        <p>还没有账号？ <a href="#" @click.prevent="goToRegister">注册</a></p>
-        <p><a href="#" @click.prevent="goToHome">返回首页</a></p>
+        <p>還沒有帳號？ <a href="#" @click.prevent="goToRegister">註冊</a></p>
+        <p><a href="#" @click.prevent="goToHome">返回首頁</a></p>
       </div>
     </div>
   </div>
 </template>
-
 <script setup>
+// ... (script part is unchanged, only template is translated)
 import { ref } from 'vue';
-
 import { useRouter } from 'vue-router';
-
 import LoadingSpinner from '@/components/base/LoadingSpinner.vue';
 import { showError, showMessage } from '@/utils/message.js';
 
@@ -100,7 +98,6 @@ function goToHome() {
   window.location.href = '/';
 }
 </script>
-
 <style scoped>
 .login-wrapper {
   display: flex;

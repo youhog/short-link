@@ -1,14 +1,14 @@
 <template>
   <div class="action-buttons" v-if="shortUrl">
-    <ActionButton 
-      :icon="copyIcon" 
+    <ActionButton
+      :icon="copyIcon"
       @click="copyLink"
     >
       {{ copyBtnText }}
     </ActionButton>
-    
-    <ActionButton 
-      :icon="shareIcon" 
+
+    <ActionButton
+      :icon="shareIcon"
       buttonClass="share"
       :animation="shareAnimation"
       :success="shareSuccess"
@@ -16,21 +16,21 @@
     >
       <span class="share-btn-text">{{ shareBtnText }}</span>
     </ActionButton>
-    
-    <ActionButton 
-      :icon="qrcodeIcon" 
+
+    <ActionButton
+      :icon="qrcodeIcon"
       buttonClass="qrcode"
       @click="emit('generate-qrcode')"
     >
-      生成二维码
+      產生 QR Code
     </ActionButton>
-    
-    <ActionButton 
-      :icon="statsIcon" 
+
+    <ActionButton
+      :icon="statsIcon"
       buttonClass="stats"
       @click="emit('show-stats')"
     >
-      访问统计
+      訪問統計
     </ActionButton>
   </div>
 </template>
@@ -43,7 +43,7 @@ import shareIcon from '@/assets/images/share.svg?raw';
 import qrcodeIcon from '@/assets/images/qrcode.svg?raw';
 import statsIcon from '@/assets/images/stats.svg?raw';
 
-// 定义props和emits
+// 定義props和emits
 const props = defineProps({
   shortUrl: {
     type: String,
@@ -53,56 +53,56 @@ const props = defineProps({
 
 const emit = defineEmits(['generate-qrcode', 'show-stats', 'message']);
 
-// 响应式状态
-const copyBtnText = ref('复制链接');
-const shareBtnText = ref('分享链接');
+// 響應式狀態
+const copyBtnText = ref('複製連結');
+const shareBtnText = ref('分享連結');
 const shareAnimation = ref(false);
 const shareSuccess = ref(false);
 
-// 复制链接
+// 複製連結
 async function copyLink() {
   if (!props.shortUrl) {
-    emit('message', '没有可复制的短链接', 'error');
+    emit('message', '沒有可複製的短連結', 'error');
     return;
   }
 
   try {
     await navigator.clipboard.writeText(props.shortUrl);
-    emit('message', '复制成功', 'success');
-    copyBtnText.value = '已复制';
+    emit('message', '複製成功', 'success');
+    copyBtnText.value = '已複製';
     setTimeout(() => {
-      copyBtnText.value = '复制链接';
+      copyBtnText.value = '複製連結';
     }, 2000);
   } catch (error) {
     fallbackLegacyCopy(props.shortUrl);
   }
 }
 
-// 分享链接
+// 分享連結
 async function shareLink() {
   if (!props.shortUrl) {
-    emit('message', '没有可分享的短链接', 'error');
+    emit('message', '沒有可分享的短連結', 'error');
     return;
   }
 
-  // 添加点击动画效果
+  // 添加點擊動畫效果
   shareAnimation.value = true;
   setTimeout(() => {
     shareAnimation.value = false;
   }, 500);
 
-  // 获取设备类型信息
+  // 獲取設備類型資訊
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
   const isAndroid = /Android/.test(navigator.userAgent);
 
-  // 准备分享内容
-  const shareTitle = '短链接分享';
+  // 準備分享內容
+  const shareTitle = '短連結分享';
   const shareText = isMobile ?
-    '我生成了一个短链接，点击访问：' :
-    '我通过短链接服务生成了一个链接，点击访问：';
+    '我產生了一個短連結，點擊訪問：' :
+    '我透過短連結服務產生了一個連結，點擊訪問：';
 
-  // 检测是否支持Web Share API
+  // 偵測是否支援Web Share API
   if (navigator.share) {
     try {
       shareBtnText.value = '分享中...';
@@ -116,64 +116,64 @@ async function shareLink() {
       shareSuccess.value = true;
       emit('message', '分享成功', 'success');
       shareBtnText.value = '已分享';
-      
-      // 恢复原始按钮状态
+
+      // 恢復原始按鈕狀態
       setTimeout(() => {
-        shareBtnText.value = '分享链接';
+        shareBtnText.value = '分享連結';
         shareSuccess.value = false;
       }, 2000);
     } catch (error) {
-      console.error('分享失败:', error);
+      console.error('分享失敗:', error);
       if (error.name === 'AbortError') {
         emit('message', '分享已取消', 'info');
       } else {
-        // 根据设备类型提供不同的提示
+        // 根據設備類型提供不同的提示
         if (isMobile) {
           if (isIOS) {
-            emit('message', '分享失败，请尝试使用Safari浏览器', 'info');
+            emit('message', '分享失敗，請嘗試使用Safari瀏覽器', 'info');
           } else if (isAndroid) {
-            emit('message', '分享失败，请尝试使用Chrome浏览器', 'info');
+            emit('message', '分享失敗，請嘗試使用Chrome瀏覽器', 'info');
           } else {
-            emit('message', '分享失败，已复制链接到剪贴板', 'info');
+            emit('message', '分享失敗，已複製連結到剪貼簿', 'info');
           }
         } else {
-          emit('message', '分享失败，已复制链接到剪贴板', 'info');
+          emit('message', '分享失敗，已複製連結到剪貼簿', 'info');
         }
-        // 如果分享API失败，回退到剪贴板复制
+        // 如果分享API失敗，退回到剪貼簿複製
         fallbackToCopy(props.shortUrl);
       }
-      // 恢复原始按钮状态
-      shareBtnText.value = '分享链接';
+      // 恢復原始按鈕狀態
+      shareBtnText.value = '分享連結';
     }
   } else {
-    // 如果浏览器不支持原生分享API
+    // 如果瀏覽器不支援原生分享API
     if (isMobile) {
-      emit('message', '您的浏览器不支持直接分享，已复制链接', 'info');
+      emit('message', '您的瀏覽器不支援直接分享，已複製連結', 'info');
     } else {
-      emit('message', 'PC端不支持直接分享，已复制链接到剪贴板', 'info');
+      emit('message', 'PC端不支援直接分享，已複製連結到剪貼簿', 'info');
     }
-    // 复制到剪贴板
+    // 複製到剪貼簿
     fallbackToCopy(props.shortUrl);
   }
 }
 
-// 复制到剪贴板的回退方案
+// 複製到剪貼簿的退回方案
 async function fallbackToCopy(url) {
   try {
-    // 尝试使用现代Clipboard API
+    // 嘗試使用現代Clipboard API
     await navigator.clipboard.writeText(url);
-    emit('message', '链接已复制到剪贴板，请手动分享', 'success');
+    emit('message', '連結已複製到剪貼簿，請手動分享', 'success');
   } catch (err) {
-    console.error('Clipboard API失败，尝试备用方法:', err);
-    // 如果Clipboard API失败，使用传统方法
+    console.error('Clipboard API失敗，嘗試備用方法:', err);
+    // 如果Clipboard API失敗，使用傳統方法
     fallbackLegacyCopy(url);
   }
 }
 
-// 使用传统方法复制到剪贴板
+// 使用傳統方法複製到剪貼簿
 function fallbackLegacyCopy(url) {
   try {
-    // 创建一个临时输入框来复制
+    // 建立一個臨時輸入框來複製
     const tempInput = document.createElement('input');
     tempInput.value = url;
     tempInput.style.position = 'fixed';
@@ -186,13 +186,13 @@ function fallbackLegacyCopy(url) {
     document.body.removeChild(tempInput);
 
     if (successful) {
-      emit('message', '链接已复制，请手动分享', 'success');
+      emit('message', '連結已複製，請手動分享', 'success');
     } else {
-      emit('message', '复制失败，请手动复制链接', 'error');
+      emit('message', '複製失敗，請手動複製連結', 'error');
     }
   } catch (err) {
-    console.error('传统复制方法失败:', err);
-    emit('message', '无法复制链接，请手动复制', 'error');
+    console.error('傳統複製方法失敗:', err);
+    emit('message', '無法複製連結，請手動複製', 'error');
   }
 }
 </script>

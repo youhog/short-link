@@ -2,13 +2,14 @@
  * @Author: zi.yang
  * @Date: 2025-06-10 00:20:19
  * @LastEditors: zi.yang
- * @LastEditTime: 2025-06-10 14:33:57
- * @Description: 
+ * @LastEditTime: 2025-07-18 16:00:00
+ * @Description:
  * @FilePath: /short-link/src/router/index.js
  */
 import { createRouter, createWebHistory } from 'vue-router';
 
 import DashboardPage from '@/views/dashboard/index.vue';
+import HistoryPage from '@/views/history/index.vue';
 import HomePage from '@/views/home/index.vue';
 import LoginPage from '@/views/login/index.vue';
 
@@ -19,6 +20,11 @@ const routes = [
     component: HomePage
   },
   {
+    path: '/history',
+    name: 'history',
+    component: HistoryPage
+  },
+  {
     path: '/login',
     name: 'login',
     component: LoginPage
@@ -27,7 +33,6 @@ const routes = [
     path: '/dashboard',
     name: 'dashboard',
     component: DashboardPage,
-    // 将来可以添加路由守卫，检查用户是否已登录
     // meta: { requiresAuth: true }
   },
   // 将来可以添加404页面

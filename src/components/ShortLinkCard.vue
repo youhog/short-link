@@ -1,7 +1,7 @@
 <template>
   <div class="response" :class="{ visible, error: isError }" aria-live="polite">
     <div v-if="shortUrl" class="short-link-card">
-      <div class="short-link-label">短链接地址</div>
+      <div class="short-link-label">短連結地址</div>
       <div class="short-link-value">
         <a :href="shortUrl" target="_blank">{{ shortUrl }}</a>
       </div>

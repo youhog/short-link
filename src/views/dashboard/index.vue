@@ -1,78 +1,78 @@
 <template>
   <div class="dashboard-wrapper">
     <header class="dashboard-header">
-      <div class="logo">短链接统计面板</div>
+      <div class="logo">短連結統計儀表板</div>
       <div class="user-actions">
         <button class="user-button" @click="logout">
-          退出登录
+          登出
         </button>
       </div>
     </header>
-    
+
     <div class="dashboard-content">
       <div class="sidebar">
         <nav class="sidebar-nav">
           <a href="#" class="nav-item active">
             <span class="nav-icon" v-html="statsIcon"></span>
-            链接统计
+            連結統計
           </a>
           <a href="#" class="nav-item">
             <span class="nav-icon" v-html="linkIcon"></span>
-            我的链接
+            我的連結
           </a>
           <a href="#" class="nav-item">
             <span class="nav-icon" v-html="settingsIcon"></span>
-            账户设置
+            帳戶設定
           </a>
         </nav>
       </div>
-      
+
       <main class="main-content">
         <div class="page-header">
-          <h1>链接统计</h1>
-          <p>查看您的短链接使用情况</p>
+          <h1>連結統計</h1>
+          <p>查看您的短連結使用情況</p>
         </div>
-        
+
         <div class="stats-cards">
           <div class="stats-card">
-            <div class="stats-card-header">总链接数</div>
+            <div class="stats-card-header">總連結數</div>
             <div class="stats-card-value">{{ stats.totalLinks }}</div>
             <div class="stats-card-trend positive">↑ 5.2%</div>
           </div>
-          
+
           <div class="stats-card">
-            <div class="stats-card-header">总点击数</div>
+            <div class="stats-card-header">總點擊數</div>
             <div class="stats-card-value">{{ stats.totalClicks }}</div>
             <div class="stats-card-trend positive">↑ 12.7%</div>
           </div>
-          
+
           <div class="stats-card">
-            <div class="stats-card-header">本周新增</div>
+            <div class="stats-card-header">本週新增</div>
             <div class="stats-card-value">{{ stats.weeklyNew }}</div>
             <div class="stats-card-trend negative">↓ 2.3%</div>
           </div>
-          
+
           <div class="stats-card">
-            <div class="stats-card-header">平均点击率</div>
+            <div class="stats-card-header">平均點擊率</div>
             <div class="stats-card-value">{{ stats.avgClickRate }}%</div>
             <div class="stats-card-trend positive">↑ 3.8%</div>
           </div>
         </div>
-        
+
         <div class="recent-links">
           <div class="section-header">
-            <h2>最近链接</h2>
+            <h2>最近連結</h2>
             <button class="view-all-btn">查看全部</button>
           </div>
-          
+
           <div class="links-table-container">
             <table class="links-table">
               <thead>
                 <tr>
-                  <th>原始链接</th>
-                  <th>短链接</th>
-                  <th>创建时间</th>
-                  <th>点击次数</th>
+                  <th>原始連結</th>
+                  <th>短連結</th>
+                  <th>建立時間</th>
+                  <th>點擊次數</th>
                   <th>操作</th>
                 </tr>
               </thead>
@@ -86,13 +86,13 @@
                   <td>{{ link.clicks }}</td>
                   <td>
                     <div class="link-actions">
-                      <button class="action-icon copy" title="复制链接" @click="copyLink(link.shortUrl)">
+                      <button class="action-icon copy" title="複製連結" @click="copyLink(link.shortUrl)">
                         <span v-html="copyIcon"></span>
                       </button>
-                      <button class="action-icon qr" title="查看二维码" @click="showQRCode(link.shortUrl)">
+                      <button class="action-icon qr" title="查看 QR Code" @click="showQRCode(link.shortUrl)">
                         <span v-html="qrcodeIcon"></span>
                       </button>
-                      <button class="action-icon stats" title="详细统计" @click="showLinkStats(link.id)">
+                      <button class="action-icon stats" title="詳細統計" @click="showLinkStats(link.id)">
                         <span v-html="chartIcon"></span>
                       </button>
                     </div>
@@ -102,16 +102,16 @@
             </table>
           </div>
         </div>
-        
+
         <div class="dashboard-footer">
-          <p>统计数据更新于: {{ lastUpdated }}</p>
+          <p>統計數據更新於: {{ lastUpdated }}</p>
         </div>
       </main>
     </div>
   </div>
 </template>
-
 <script setup>
+// ... (script part is unchanged, only template is translated)
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { showMessage } from '@/utils/message.js';
@@ -206,7 +206,6 @@ function logout() {
   }, 1500);
 }
 </script>
-
 <style scoped>
 .dashboard-wrapper {
   min-height: 100vh;

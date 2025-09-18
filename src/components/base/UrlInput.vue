@@ -2,23 +2,23 @@
   <div class="url-wrapper">
     <div class="input-container">
       <div class="input-icon" v-html="icon"></div>
-      <input 
-        type="text" 
-        :placeholder="placeholder" 
+      <input
+        type="text"
+        :placeholder="placeholder"
         :value="modelValue"
         @input="emit('update:modelValue', $event.target.value)"
       >
     </div>
-    <input 
-      type="button" 
-      :value="buttonText" 
+    <input
+      type="button"
+      :value="buttonText"
       @click="emit('submit')"
     >
   </div>
 </template>
 
 <script setup>
-// 定义props
+// 定義props
 const props = defineProps({
   modelValue: {
     type: String,
@@ -26,7 +26,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: '输入链接'
+    default: '輸入連結'
   },
   buttonText: {
     type: String,
@@ -38,7 +38,7 @@ const props = defineProps({
   }
 });
 
-// 定义emits
+// 定義emits
 const emit = defineEmits(['update:modelValue', 'submit']);
 </script>
 

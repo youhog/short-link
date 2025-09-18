@@ -1,7 +1,7 @@
 <template>
-  <button 
-    class="action-btn" 
-    :class="[buttonClass, { 'share-animation': animation, 'share-success': success }]" 
+  <button
+    class="action-btn"
+    :class="[buttonClass, { 'share-animation': animation, 'share-success': success }]"
     @click="emit('click')"
   >
     <div class="btn-icon" v-html="icon"></div>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-// 定义props和emits
+// 定義props和emits
 defineProps({
   icon: {
     type: String,
